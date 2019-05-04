@@ -65,19 +65,22 @@ public class BasicLinkedListClass
 
     private int	accessAtIndex(int controlCode, int index)
     {
-        if(controlCode == REMOVE)
+
+        if(index <= getCurrentSize())
         {
-            this.removeAtIndex(index);
+            if(controlCode == REMOVE)
+            {
+                this.removeAtIndex(index);
+            }
+
+            if(controlCode == RETRIEVE)
+            {
+                return this.getAtIndex(index);
+            }
+
         }
 
-        if(controlCode == RETRIEVE)
-        {
-            return this.getAtIndex(index);
-        }
-        else
-        {
-            return FAILED_ACCESS;
-        }
+        return FAILED_ACCESS;
     }
 
     protected void clear()
@@ -95,9 +98,9 @@ public class BasicLinkedListClass
     // (if NodeClass.nextref != null)
     protected int getCurrentSize()
     {
-        if(this.headref.nextRef != null)
+        if(this.headref != null)
         {
-            getCurrentSizeHelper(this.headref.nextRef);
+            getCurrentSizeHelper(this.headref);
         }
         return 0;
     }
@@ -106,12 +109,11 @@ public class BasicLinkedListClass
     // This returns the list size
     private int	getCurrentSizeHelper(NodeClass wkgRef)
     {
-        int size = 0;
-
-        while(wkgRef.nextRef != null)
+        int size = 1;
+        if(wkgRef != null)
         {
+            getCurrentSizeHelper(wkgRef.nextRef);
             size++;
-            wkgRef = wkgRef.nextRef;
         }
         return size;
     }
@@ -154,14 +156,14 @@ public class BasicLinkedListClass
         int listIndex, printIndex;
         if(showIndex)
         {
-            System.out.print("List: | ");
+            System.out.printf("List: | ");
             for(listIndex = 0; temp != null; listIndex++)
             {
-                System.out.print(temp +  " | ");
+                System.out.printf(temp +  " | ");
                 temp = temp.nextRef;
             }
 
-            System.out.print("/n");
+            System.out.printf("/n");
 
             for(printIndex = 0; printIndex < listIndex; printIndex++ )
             {
@@ -170,10 +172,10 @@ public class BasicLinkedListClass
         }
         else
         {
-            System.out.print("List: | ");
+            System.out.printf("List: | ");
             for(listIndex = 0; temp != null; listIndex++)
             {
-                System.out.print(temp +  " | ");
+                System.out.printf(temp +  " | ");
                 temp = temp.nextRef;
             }
         }

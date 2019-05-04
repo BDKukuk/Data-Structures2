@@ -26,6 +26,7 @@ public class IteratorClass extends BasicLinkedListClass
     public void clear()
     {
         super.clear();
+        currentIndex = 0;
     }
 
     public int getAtCurrent()
@@ -35,6 +36,11 @@ public class IteratorClass extends BasicLinkedListClass
 
     public boolean isAtBeginning()
     {
+        if(super.getCurrentSize() == 0)
+        {
+            return false;
+        }
+
         if(currentIndex == 0)
         {
             return true;
@@ -45,6 +51,11 @@ public class IteratorClass extends BasicLinkedListClass
 
     public boolean isAtEnd()
     {
+        if(super.getCurrentSize() == 0)
+        {
+            return false;
+        }
+
         if(currentIndex == super.getCurrentSize())
         {
             return true;
@@ -90,6 +101,13 @@ public class IteratorClass extends BasicLinkedListClass
 
     public int removeAtCurrent()
     {
+
+        if(super.getCurrentSize() == currentIndex)
+        {
+            int lastIndex = currentIndex;
+            currentIndex--;
+            return super.removeAtIndex(lastIndex);
+        }
         return super.removeAtIndex(currentIndex);
     }
 
@@ -122,6 +140,7 @@ public class IteratorClass extends BasicLinkedListClass
 
     public boolean setBeforeCurrent(int newValue)
     {
+        moveNext();
         return super.setAtIndex(currentIndex,newValue,INSERT_BEFORE);
     }
 

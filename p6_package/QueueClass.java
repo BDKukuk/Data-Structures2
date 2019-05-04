@@ -13,16 +13,7 @@ public class QueueClass
 
     QueueClass(QueueClass copied)
     {
-        int queueIndex;
-        BasicLinkedListClass queueData = new BasicLinkedListClass();
-
-        for(queueIndex = 0; queueIndex <
-                queueData.getCurrentSize();queueIndex++)
-        {
-            queueData.setAtIndex(queueIndex,
-                    copied.queueData.getAtIndex(queueIndex),
-                    BasicLinkedListClass.REPLACE);
-        }
+        BasicLinkedListClass queueData = new BasicLinkedListClass(copied.queueData);
     }
 
     public void clear()
@@ -36,7 +27,9 @@ public class QueueClass
 
         while(queueIndex < queueData.getCurrentSize())
         {
-            System.out.print(queueData.getAtIndex(queueIndex) + ", ");
+            System.out.print("Head -->");
+            System.out.printf(queueData.getAtIndex(queueIndex) + ", ");
+            System.out.print("<-- Tail");
         }
     }
 
@@ -48,7 +41,7 @@ public class QueueClass
 
     public int dequeue()
     {
-        return queueData.removeAtIndex(0);
+        return queueData.removeAtIndex(queueData.getCurrentSize() -1);
     }
 
     public boolean isEmpty()
