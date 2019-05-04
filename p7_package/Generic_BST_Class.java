@@ -1,6 +1,5 @@
 package p7_package;
 
-import p2_package.N2_SortDriverClass;
 
 public class Generic_BST_Class<GenericData extends Comparable<GenericData>>
 {
@@ -37,9 +36,12 @@ public class Generic_BST_Class<GenericData extends Comparable<GenericData>>
      */
     private void displayInOrderHelper(BST_Node localRoot)
     {
-        displayInOrderHelper(localRoot.leftChildRef);
-        System.out.print(localRoot);
-        displayInOrderHelper(localRoot.rightChildRef);
+        if(localRoot != null)
+        {
+            displayInOrderHelper(localRoot.leftChildRef);
+            System.out.print(localRoot.nodeData);
+            displayInOrderHelper(localRoot.rightChildRef);
+        }
     }
 
     /**
@@ -56,9 +58,14 @@ public class Generic_BST_Class<GenericData extends Comparable<GenericData>>
      */
     private void displayPostOrderHelper(BST_Node localRoot)
     {
-        displayInOrderHelper(localRoot.rightChildRef);
-        System.out.print(localRoot);
-        displayInOrderHelper(localRoot.leftChildRef);
+        if(localRoot != null)
+        {
+            displayInOrderHelper(localRoot.leftChildRef);
+            displayInOrderHelper(localRoot.rightChildRef);
+            System.out.print(localRoot.nodeData);
+
+        }
+
     }
 
     /**
@@ -75,9 +82,12 @@ public class Generic_BST_Class<GenericData extends Comparable<GenericData>>
      */
     private void displayPreOrderHelper(BST_Node localRoot)
     {
-        System.out.print(localRoot);
-        displayInOrderHelper(localRoot.leftChildRef);
-        displayInOrderHelper(localRoot.rightChildRef);
+        if(localRoot != null)
+        {
+            System.out.print(localRoot);
+            displayInOrderHelper(localRoot.leftChildRef);
+            displayInOrderHelper(localRoot.rightChildRef);
+        }
     }
 
     /**
@@ -97,7 +107,10 @@ public class Generic_BST_Class<GenericData extends Comparable<GenericData>>
         }
         else
         {
-            insertHelper(BST_Root,inData);
+            if(search(inData) != inData)
+            {
+                insertHelper(BST_Root,inData);
+            }
         }
     }
 
@@ -109,19 +122,23 @@ public class Generic_BST_Class<GenericData extends Comparable<GenericData>>
     private BST_Node insertHelper(BST_Node localRoot, GenericData inData)
     {
         BST_Node newNode = new BST_Node(inData);
-        if(inData.compareTo(newNode.nodeData) < 0)
+        if(localRoot != null)
         {
-            if(BST_Root.leftChildRef.nodeData == null)
+            if(inData.compareTo(newNode.nodeData) < 0)
             {
-                localRoot.leftChildRef = new BST_Node(inData);
+                if(BST_Root.leftChildRef.nodeData == null)
+                {
+                    localRoot.leftChildRef = new BST_Node(inData);
+                }
+                return insertHelper(localRoot.leftChildRef,inData);
             }
-            return insertHelper(localRoot.leftChildRef,inData);
-        }
             if(BST_Root.rightChildRef.nodeData == null)
             {
                 localRoot.rightChildRef = new BST_Node(inData);
             }
             return insertHelper(localRoot.rightChildRef,inData);
+        }
+       return null;
     }
 
     /**
@@ -130,12 +147,7 @@ public class Generic_BST_Class<GenericData extends Comparable<GenericData>>
      */
     public boolean isEmpty()
     {
-        if(BST_Root == null)
-        {
-            return true;
-        }
-
-        return false;
+        return BST_Root == null;
     }
 
     /**
@@ -171,7 +183,8 @@ public class Generic_BST_Class<GenericData extends Comparable<GenericData>>
      */
     public GenericData removeItem(GenericData inData)
     {
-        if(search(inData) != null)
+        GenericData searchData = search(inData);
+        if(searchData != null)
         {
             removeItemHelper(BST_Root,inData);
         }
@@ -191,12 +204,20 @@ public class Generic_BST_Class<GenericData extends Comparable<GenericData>>
      */
     private BST_Node removeItemHelper(BST_Node localRoot, GenericData outData)
     {
-        if(localRoot.nodeData.compareTo(outData) < 0)
+        if(localRoot.leftChildRef.nodeData != null)
         {
-            removeFromMax(localRoot, localRoot.leftChildRef);
+            if(localRoot.nodeData.compareTo(outData) < 0)
+            {
+                removeFromMax(localRoot, localRoot.leftChildRef);
+            }
         }
 
-        return removeFromMax(localRoot, localRoot.rightChildRef);
+        if(localRoot.rightChildRef.nodeData != null)
+        {
+            return removeFromMax(localRoot, localRoot.rightChildRef);
+        }
+
+        return null;
     }
 
     /**
@@ -206,11 +227,6 @@ public class Generic_BST_Class<GenericData extends Comparable<GenericData>>
      */
     public GenericData search(GenericData searchData)
     {
-        if(BST_Root == null)
-        {
-            return null;
-        }
-
         return searchHelper(BST_Root,searchData);
     }
 
@@ -222,19 +238,23 @@ public class Generic_BST_Class<GenericData extends Comparable<GenericData>>
      */
     private GenericData searchHelper(BST_Node localRoot,GenericData searchData)
     {
-        if(localRoot.nodeData == searchData)
+        if( localRoot != null)
         {
-            return localRoot.nodeData;
-        }
+            if(localRoot.nodeData == searchData)
+            {
+                return localRoot.nodeData;
+            }
 
-        if(localRoot.nodeData.compareTo(searchData) < 0)
-        {
-            return searchHelper(localRoot.leftChildRef,searchData);
+            if(localRoot.nodeData.compareTo(searchData) < 0)
+            {
+                return searchHelper(localRoot.leftChildRef,searchData);
+            }
+            else
+            {
+                return searchHelper(localRoot.rightChildRef, searchData);
+            }
         }
-        else
-        {
-            return searchHelper(localRoot.rightChildRef, searchData);
-        }
+        return null;
     }
 
 
@@ -248,8 +268,8 @@ public class Generic_BST_Class<GenericData extends Comparable<GenericData>>
 
         BST_Node(BST_Node copied)
         {
-            leftChildRef = null;
-            rightChildRef = null;
+            leftChildRef = copied.leftChildRef;
+            rightChildRef = copied.rightChildRef;
             nodeData = copied.nodeData;
         }
 

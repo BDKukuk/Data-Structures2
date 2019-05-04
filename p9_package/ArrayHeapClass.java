@@ -18,7 +18,9 @@ public class ArrayHeapClass
      */
     public ArrayHeapClass()
     {
+
         arrayCapacity = DEFAULT_ARRAY_CAPACITY;
+        heapArray = new StudentClass[arrayCapacity];
         arraySize = 0;
         displayFlag = false;
     }
@@ -31,6 +33,7 @@ public class ArrayHeapClass
     public ArrayHeapClass(ArrayHeapClass copied)
     {
         this.arrayCapacity = copied.arrayCapacity;
+        this.heapArray = new StudentClass[arrayCapacity];
         this.displayFlag = copied.displayFlag;
         this.arraySize = copied.arraySize;
 
@@ -64,27 +67,29 @@ public class ArrayHeapClass
      */
     private void bubbleUpArrayHeap(int currentIndex)
     {
-        if(currentIndex % 2 == 0 )
+        if(currentIndex < 0)
         {
-            if(heapArray[currentIndex].gpa > heapArray[(currentIndex/2) -1 ].gpa)
+            if(currentIndex % 2 == 0 )
             {
-                double placeholder = heapArray[(currentIndex/2) -1 ].gpa;
-                heapArray[(currentIndex/2) -1 ].gpa = heapArray[currentIndex].gpa;
-                heapArray[currentIndex].gpa = placeholder;
-                bubbleUpArrayHeap((currentIndex/2) -1);
+                if(heapArray[currentIndex].gpa > heapArray[(currentIndex/2) -1 ].gpa)
+                {
+                    double placeholder = heapArray[(currentIndex/2) -1 ].gpa;
+                    heapArray[(currentIndex/2) -1 ].gpa = heapArray[currentIndex].gpa;
+                    heapArray[currentIndex].gpa = placeholder;
+                    bubbleUpArrayHeap((currentIndex/2) -1);
+                }
+            }
+            else
+            {
+                if(heapArray[currentIndex].gpa > heapArray[(currentIndex/2)].gpa)
+                {
+                    double placeholder = heapArray[(currentIndex/2)].gpa;
+                    heapArray[(currentIndex/2)].gpa = heapArray[currentIndex].gpa;
+                    heapArray[currentIndex].gpa = placeholder;
+                    bubbleUpArrayHeap((currentIndex/2));
+                }
             }
         }
-        else
-        {
-            if(heapArray[currentIndex].gpa > heapArray[(currentIndex/2)].gpa)
-            {
-                double placeholder = heapArray[(currentIndex/2)].gpa;
-                heapArray[(currentIndex/2)].gpa = heapArray[currentIndex].gpa;
-                heapArray[currentIndex].gpa = placeholder;
-                bubbleUpArrayHeap((currentIndex/2));
-            }
-        }
-
     }
 
     /**
@@ -97,6 +102,7 @@ public class ArrayHeapClass
     {
         int heapIndex = 0;
         StudentClass[] newArray = new StudentClass[2*arraySize];
+
         if(arraySize == arrayCapacity)
         {
             while(heapArray[heapIndex] != null)
@@ -104,9 +110,11 @@ public class ArrayHeapClass
                 while(heapIndex < arraySize)
                 {
                     newArray[heapIndex] = heapArray[heapIndex];
+                    heapIndex++;
                 }
             }
             heapArray = newArray;
+            arrayCapacity = arrayCapacity*2;
         }
     }
 

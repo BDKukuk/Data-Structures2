@@ -196,17 +196,27 @@ public class RB_TreeClass
      */
     private RBT_Node copyConstructorHelper( RBT_Node workingCopiedRef )
     {
-        RBT_Node localRoot = new RBT_Node(workingCopiedRef.nodeData);
+        if(workingCopiedRef == null)
+        {
+            return null;
+        }
+        RBT_Node localRoot = new RBT_Node(workingCopiedRef);
+
         if(localRoot.leftChildRef != null)
         {
             localRoot.leftChildRef = copyConstructorHelper(
                     workingCopiedRef.leftChildRef);
         }
+
+        localRoot.leftChildRef = null;
+
         if(localRoot.rightChildRef != null)
         {
             localRoot.rightChildRef = copyConstructorHelper(
                     workingCopiedRef.rightChildRef);
         }
+
+        localRoot.rightChildRef = null;
 
 
         return localRoot;

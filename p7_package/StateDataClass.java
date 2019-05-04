@@ -10,8 +10,8 @@ public class StateDataClass
      */
     public StateDataClass()
     {
-        this.population = population;
-        this.state = state;
+        this.population = 0;
+        this.state = " ";
     }
 
     /**
@@ -19,7 +19,7 @@ public class StateDataClass
      * @param stateName
      * @param inPopulation
      */
-    public StateDataClass(java.lang.String stateName, int inPopulation)
+    public StateDataClass(String stateName, int inPopulation)
     {
         this.state = stateName;
         this.population = inPopulation;
@@ -52,16 +52,17 @@ public class StateDataClass
      */
     public int compareTo(StateDataClass other)
     {
-     if(this.state.length() - other.state.length() > 0)
+     int wordIndex;
+     int otherTotal = 0;
+     int total = 0;
+
+     for(wordIndex = 0; wordIndex < other.state.length(); wordIndex++)
      {
-         return 1;
-     }
-     if(this.state.length() - other.state.length() < 0)
-     {
-         return -1;
+         total = total + (int)this.state.charAt(wordIndex);
+         otherTotal = otherTotal + (int)(other.state.charAt(wordIndex));
      }
 
-     return 0;
+     return total - otherTotal;
     }
 
 
@@ -74,7 +75,7 @@ public class StateDataClass
     public char toLowerCase(char testChar)
     {
         {
-            if (testChar <= 'A' || testChar >= 'Z')
+            if (testChar < 'A' || testChar > 'Z')
             {
                 testChar = (char)((testChar - 'A') + 'a');
             }
