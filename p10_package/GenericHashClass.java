@@ -127,7 +127,7 @@ public class GenericHashClass<GenericData extends Comparable<GenericData>>
         int hashIndex;
         for(hashIndex = 0; hashIndex<tableSize;hashIndex++)
         {
-            if(searchItem == tableArray[hashIndex])
+            if(searchItem.compareTo((GenericData)tableArray[hashIndex]) == 0 )
             {
                 return hashIndex;
             }

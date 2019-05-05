@@ -184,9 +184,9 @@ public class Generic_BST_Class<GenericData extends Comparable<GenericData>>
     public GenericData removeItem(GenericData inData)
     {
         GenericData searchData = search(inData);
-        if(searchData != null)
+        if(searchData != null && BST_Root != null)
         {
-            removeItemHelper(BST_Root,inData);
+            return removeItemHelper(BST_Root,inData).nodeData;
         }
 
         return null;
@@ -204,18 +204,24 @@ public class Generic_BST_Class<GenericData extends Comparable<GenericData>>
      */
     private BST_Node removeItemHelper(BST_Node localRoot, GenericData outData)
     {
-        if(localRoot.leftChildRef.nodeData != null)
+
+        if(localRoot.nodeData.compareTo(outData) < 0)
         {
-            if(localRoot.nodeData.compareTo(outData) < 0)
-            {
-                removeFromMax(localRoot, localRoot.leftChildRef);
-            }
+            removeItemHelper(localRoot.leftChildRef,outData);
+        }
+        if(localRoot.nodeData.compareTo(outData) > 0)
+        {
+            removeItemHelper(localRoot.rightChildRef, outData);
         }
 
-        if(localRoot.rightChildRef.nodeData != null)
-        {
-            return removeFromMax(localRoot, localRoot.rightChildRef);
-        }
+
+            if(localRoot.nodeData.compareTo(outData) == 0)
+            {
+                BST_Node replacementNode = removeFromMax(localRoot, localRoot.leftChildRef);
+                BST_Node returnNode = localRoot;
+                localRoot.nodeData = replacementNode.nodeData;
+                return returnNode;
+            }
 
         return null;
     }

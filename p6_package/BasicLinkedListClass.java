@@ -2,6 +2,7 @@ package p6_package;
 
 import com.sun.org.apache.xerces.internal.util.SynchronizedSymbolTable;
 
+import javax.xml.soap.Node;
 import java.util.LinkedList;
 
 public class BasicLinkedListClass
@@ -182,49 +183,52 @@ public class BasicLinkedListClass
 
     }
 
+    /**
+     * Description: sets item in linked list at specified virtual index
+     *
+     * Note: If constant REPLACE is used, new value overwrites value at current virtual index
+     *
+     * Note: If constant INSERT_BEFORE is used, new value is inserted prior to the value at the current virtual index
+     *
+     * Note: If constant INSERT_AFTER is used, new value is inserted after the value at the current virtual index
+     *
+     * Note: Method must check for correct virtual array boundaries; if index requested is below zero or above list size - 1, method must take no action and return false
+     *
+     * Note: Method must check for correct replace flag; if it is not one of the three specified flags, it must take no action and return false
+     * @param setIndex
+     * @param newValue
+     * @param replaceFlag
+     * @return
+     */
     protected boolean setAtIndex(int setIndex, int newValue, int replaceFlag)
     {
-        int listIndex;
-        NodeClass temp = new NodeClass(headref);
-
-        if(setIndex >= getCurrentSize() || setIndex < 0)
-        {
-            return false;
-        }
-
-        if(replaceFlag == REPLACE)
-        {
-            for(listIndex = 0; listIndex <= setIndex;listIndex++)
-            {
-                temp = temp.nextRef;
-            }
-
-            temp.nodeData = newValue;
-            return true;
-        }
-        if(replaceFlag == INSERT_BEFORE)
-        {
-            for(listIndex = 0; listIndex < setIndex; listIndex++)
-            {
-                temp = temp.nextRef;
-            }
-
-            temp.nodeData = newValue;
-            return true;
-        }
-
-        if(replaceFlag == INSERT_AFTER)
-        {
-            for(listIndex = 0; listIndex <=  setIndex+1; listIndex++)
-            {
-                temp = temp.nextRef;
-            }
-
-            temp.nodeData = newValue;
-            return true;
-        }
-
-        return false;
+       int linkedListIndex;
+       NodeClass currentNode = headref;
+       for(linkedListIndex = 0; linkedListIndex < setIndex; linkedListIndex++)
+       {
+           currentNode = currentNode.nextRef;
+       }
+       if(replaceFlag == INSERT_BEFORE)
+       {
+           NodeClass nodeHolder = currentNode.nextRef;
+           currentNode.nextRef = new NodeClass(newValue);
+           currentNode.nextRef.nextRef = nodeHolder;
+           return true;
+       }
+       currentNode = currentNode.nextRef;
+       if(replaceFlag == REPLACE)
+       {
+           currentNode.nodeData = newValue;
+           return true;
+       }
+       if(replaceFlag == INSERT_AFTER)
+       {
+           NodeClass nodeHolder = currentNode.nextRef;
+           currentNode.nextRef = new NodeClass(newValue);
+           currentNode.nextRef.nextRef = nodeHolder;
+           return true;
+       }
+       return false;
     }
 
 

@@ -183,7 +183,7 @@ public class ArrayHeapClass
             heapArray[currentIndex] = placeholder;
             trickleDownArrayHeap(currentIndex*2+1);
         }
-        else
+        if(heapArray[currentIndex].gpa < heapArray[currentIndex*2 + 2].gpa)
         {
             StudentClass placeholder = heapArray[currentIndex*2+2];
             heapArray[currentIndex*2 + 2] = heapArray[currentIndex];
