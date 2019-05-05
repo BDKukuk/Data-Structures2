@@ -51,16 +51,7 @@ public class StudentClass implements Comparable<StudentClass> {
      */
     public int compareTo(StudentClass other)
     {
-        if(this.gpa - other.gpa > 0)
-        {
-            return 1;
-        }
-        if(this.gpa - other.gpa < 0)
-        {
-            return -1;
-        }
-
-        return 0;
+        return (int)(this.gpa - other.gpa);
     }
 
     /**
