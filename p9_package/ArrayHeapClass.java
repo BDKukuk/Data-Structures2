@@ -165,7 +165,7 @@ public class ArrayHeapClass
         int heapIndex;
         for(heapIndex = 0; heapIndex < arraySize; heapIndex++)
         {
-            System.out.println(heapArray[heapIndex]);
+            heapArray[heapIndex].toString();
         }
     }
 

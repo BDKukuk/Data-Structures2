@@ -22,6 +22,13 @@ public class GenericHashClass<GenericData extends Comparable<GenericData>>
      */
     public GenericHashClass()
     {
+        int hashIndex = 0;
+        tableArray = new Object[DEFAULT_TABLE_SIZE];
+        while(hashIndex < DEFAULT_TABLE_SIZE)
+        {
+            tableArray[hashIndex] = null;
+            hashIndex++;
+        }
         probeFlag = LINEAR_PROBING;
         tableSize = DEFAULT_TABLE_SIZE;
     }
@@ -34,6 +41,13 @@ public class GenericHashClass<GenericData extends Comparable<GenericData>>
      */
     public GenericHashClass(int inProbeFlag)
     {
+        int hashIndex = 0;
+        tableArray = new Object[DEFAULT_TABLE_SIZE];
+        while(hashIndex < DEFAULT_TABLE_SIZE)
+        {
+            tableArray[hashIndex] = null;
+            hashIndex++;
+        }
         probeFlag = inProbeFlag;
         tableSize = DEFAULT_TABLE_SIZE;
     }
@@ -48,6 +62,13 @@ public class GenericHashClass<GenericData extends Comparable<GenericData>>
     public GenericHashClass(int inTableSize,
                             int inProbeFlag)
     {
+        int hashIndex = 0;
+        tableArray = new Object[inTableSize];
+        while(hashIndex < inTableSize)
+        {
+            tableArray[hashIndex] = null;
+            hashIndex++;
+        }
         tableSize = inTableSize;
         probeFlag = inProbeFlag;
     }
@@ -66,23 +87,26 @@ public class GenericHashClass<GenericData extends Comparable<GenericData>>
      */
     public boolean addItem(GenericData newItem)
     {
-        int hashVal =  generateHash(newItem);
         int attempt;
-
-        for(attempt = 0; attempt < tableSize; attempt++)
+        int hashValue = generateHash(newItem);
+        if(hashValue > tableSize)
         {
-            if(tableArray[hashVal] == null)
+            for(attempt = 0; attempt < tableSize; attempt++)
             {
-                tableArray[hashVal] = newItem;
-                return true;
-            }
-            hashVal++;
+                if(tableArray[attempt] == null)
+                {
+                    tableArray[attempt] = newItem;
+                    return true;
+                }
+                attempt++;
 
-            if(hashVal >= tableSize)
-            {
-                hashVal = 0;
+                if(attempt >= tableSize)
+                {
+                    attempt = 0;
+                }
             }
         }
+
         return false;
     }
 
@@ -95,6 +119,7 @@ public class GenericHashClass<GenericData extends Comparable<GenericData>>
         while(hashIndex < tableSize)
         {
             tableArray[hashIndex] = null;
+            hashIndex++;
         }
     }
 
@@ -108,9 +133,9 @@ public class GenericHashClass<GenericData extends Comparable<GenericData>>
         int hashIndex;
         for(hashIndex = 0; hashIndex < tableSize; hashIndex++)
         {
-            if(searchItem == tableArray[hashIndex])
+            if(searchItem.compareTo( (GenericData) tableArray[hashIndex]) == 0)
             {
-                return searchItem;
+                return (GenericData) tableArray[hashIndex];
             }
         }
         return null;
@@ -159,8 +184,9 @@ public class GenericHashClass<GenericData extends Comparable<GenericData>>
         int hashIndex = findItemIndex(toBeRemoved);
         if( hashIndex != ITEM_NOT_FOUND)
         {
+            Object Removed = tableArray[hashIndex];
             tableArray[hashIndex] = null;
-            return toBeRemoved;
+            return (GenericData) Removed;
         }
         return null;
     }
@@ -188,7 +214,10 @@ public class GenericHashClass<GenericData extends Comparable<GenericData>>
                 emptyNodes++;
                 printString = printString + 'N';
             }
-            printString = printString + "D";
+            else
+            {
+                printString = printString + "D";
+            }
 
             if(tableArray[hashIndex] == tableArray[hashIndex - 1])
             {
@@ -208,6 +237,7 @@ public class GenericHashClass<GenericData extends Comparable<GenericData>>
         printString = printString + ( "\n \t Empty Nodes: " + emptyNodes);
         printString = printString + ("\n \t Min Continuous Values: " + minValue);
         printString = printString + ("\n \t Max Continuous Values: " + maxValue);
+        System.out.println(printString);
 
         return printString;
     }
